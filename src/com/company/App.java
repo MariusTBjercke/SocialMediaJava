@@ -21,7 +21,7 @@ public class App {
         UserList.add(new User(GenerateId(), name, username, password, email, age, online));
     }
 
-    public void Logout() throws IOException {
+    public void Logout() {
         CurrentUser.Online = false;
         CurrentUser = null;
         System.out.println("Du er nå logget ut.");
@@ -78,7 +78,7 @@ public class App {
     }
 
     public Integer GenerateId() {
-        if (UserList.stream().count() > 0) {
+        if ((long) UserList.size() > 0) {
             var idList = UserList.stream().map(x -> x.UserId).toList();
             var maxId = Collections.max(idList);
             return maxId + 1;
@@ -96,7 +96,7 @@ public class App {
     }
 
     public Integer FindUserIndex(Integer id) {
-        var found = UserList.stream().filter(x -> x.UserId == id).findAny().orElse(null);
+        var found = UserList.stream().filter(x -> x.UserId.equals(id)).findAny().orElse(null);
         return UserList.indexOf(found);
     }
 
@@ -112,9 +112,13 @@ public class App {
         }
     }
 
-    public void GetUserInput(boolean showName, boolean toLowerChars) throws IOException {
+    public void GetUserInput(boolean showName, boolean toLowerChars) {
         if (showName) System.out.print(CurrentUser.Name + ": ");
-        UserInput = toLowerChars ? console.readLine().toLowerCase() : console.readLine();
+        try {
+            UserInput = toLowerChars ? console.readLine().toLowerCase() : console.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void GetCommand() throws IOException {
@@ -122,17 +126,11 @@ public class App {
         GetUserInput(true, true);
 
         switch (UserInput) {
-            case "logg ut", "logout":
-                Logout();
-                break;
-            case "vis venner":
-                CurrentUser.PrintFriends();
-                break;
-            case "legg til venn":
-                AddFriend();
-                break;
-            default:
-                break;
+            case "logg ut", "logout" -> Logout();
+            case "vis venner" -> CurrentUser.PrintFriends();
+            case "legg til venn" -> AddFriend();
+            default -> {
+            }
         }
 
     }

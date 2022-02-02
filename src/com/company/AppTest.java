@@ -1,6 +1,7 @@
 package com.company;
 
-import java.util.ArrayList;
+import org.junit.jupiter.api.*;
+
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -8,50 +9,55 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AppTest {
 
-    @org.junit.jupiter.api.Test
+    App app;
+
+    @BeforeEach
+    void setUp() {
+        app = new App("Facebook");
+    }
+
+    @Test
     void addFriend() {
-
-
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void generateId() {
-        var idList = Main.app.UserList.stream().map(x -> x.UserId).toList();
+        var idList = app.UserList.stream().map(x -> x.UserId).toList();
         var maxId = Collections.max(idList);
-        assertEquals(maxId + 1, Main.app.GenerateId(), "List is expected to have users. Return last id + 1.");
+        assertEquals(maxId + 1, app.GenerateId(), "List is expected to have users. Return last id + 1.");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void generateId2() {
-        Main.app.UserList.clear();
-        assertEquals(1, Main.app.GenerateId(), "List is expected to be empty. Return 1.");
+        app.UserList.clear();
+        assertEquals(1, app.GenerateId(), "List is expected to be empty. Return 1.");
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void findUser() {
         assertAll("FindUser",
-                () -> assertEquals(Main.app.UserList.get(0), Main.app.FindUser(1)),
-                () -> assertEquals(Main.app.UserList.get(0), Main.app.FindUser("mariustb"))
+                () -> assertEquals(app.UserList.get(0), app.FindUser(1)),
+                () -> assertEquals(app.UserList.get(0), app.FindUser("mariustb"))
         );
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testFindUser() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void findUserIndex() {
         assertAll("FindUserIndex",
-                () -> assertEquals(0, Main.app.FindUserIndex(1)),
-                () -> assertEquals(0, Main.app.FindUserIndex("mariustb"))
+                () -> assertEquals(0, app.FindUserIndex(1)),
+                () -> assertEquals(0, app.FindUserIndex("mariustb"))
         );
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testFindUserIndex() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void main() {
     }
 }
